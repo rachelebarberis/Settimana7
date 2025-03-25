@@ -60,6 +60,32 @@ namespace Settimana7.Controllers
 
             });
         }
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _studentService.GetStudentByIdAsync(id);
+
+            return result != null ? Ok(new { message = "Student found", customer = result }) : BadRequest(new { message = "Something went wrong" });
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _studentService.DeleteStudentAsync(id);
+
+            return result ? Ok(new { message = "Customer deleted" }) : BadRequest(new { message = "Something went wrong" });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromQuery] Guid id, [FromBody] Student student)
+        {
+            var result = await _studentService.UpdateStudentAsync(id, student);
+
+            return result ? Ok(new { message = "Student updated" }) : BadRequest(new { message = "Something went wrong" });
+        }
     }
 }
+    
+
 

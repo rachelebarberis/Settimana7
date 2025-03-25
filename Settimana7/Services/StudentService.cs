@@ -49,5 +49,67 @@ namespace Settimana7.Services
                 return null;
             }
         }
+        public async Task<Student?> GetStudentByIdAsync(Guid id)
+        {
+            try
+            {
+                return await _context.Students.FirstOrDefaultAsync(c => c.Id == id);
+            }
+            catch 
+            {
+          
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteStudentAsync(Guid id)
+        {
+            try
+            {
+                var existingStudent = await GetStudentByIdAsync(id);
+
+                if (existingStudent == null)
+                {
+                    return false;
+                }
+
+                _context.Students.Remove(existingStudent);
+
+                return await SaveAsync();
+            }
+            catch 
+            {
+            
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateStudentAsync(Guid id, Student student)
+        {
+            try
+            {
+                var existingStudent = await GetStudentByIdAsync(id);
+
+                if (existingStudent == null)
+                {
+                    return false;
+                }
+
+                existingStudent.Nome = student.Nome;
+                existingStudent.Cognome = student.Cognome;
+                existingStudent.Email = student.Email;
+
+         
+
+                return await SaveAsync();
+            }
+            catch 
+            {
+
+                return false;
+            }
+        }
     }
 }
+    
+
